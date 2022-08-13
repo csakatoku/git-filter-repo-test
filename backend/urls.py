@@ -20,6 +20,7 @@ from rest_framework.schemas import get_schema_view
 
 schema_url_patterns = [
     path("version", backend_meta.views.VersionAPIView.as_view()),
+    path("slots/", include("backend_slots.urls")),
 ]
 
 urlpatterns = [
