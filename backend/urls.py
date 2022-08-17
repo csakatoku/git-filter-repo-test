@@ -13,9 +13,26 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+import backend_meta.views
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
+from rest_framework.schemas import get_schema_view
+
+schema_url_patterns = [
+    path("version", backend_meta.views.VersionAPIView.as_view()),
+]
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path(
+        "openapi",
+        get_schema_view(
+            title="My API",
+            description="My API",
+            version="1.0.0",
+            patterns=schema_url_patterns,
+        ),
+        name="openapi-schema",
+    ),
+    path("api/", include(schema_url_patterns)),
 ]
